@@ -71,4 +71,4 @@ This project is licence under the (MIT)[LICENSE] community standards
 ## Author
 
 1. David M. Muchoki
-2. (Michael Korir)[https://github.com/michaelkorir]
+2. Michael Korir- https://github.com/michaelkorir

@@ -26,11 +26,11 @@ The chatting app is designed to facilitate communication between users in real-t
 
 ## Technologies Used
 
-- Backend: [Specify backend framework or technology]
-- Database: [Specify database technology]
-- Frontend: [Specify frontend framework or technology]
-- Real-time Communication: [Specify real-time communication technology]
-- Other technologies: [Any other relevant technologies used]
+- Backend: [Flask ](https://flask.palletsprojects.com/en/2.0.x/)
+- Python
+- Database: [Postgresql]
+- Frontend: [React Framework]
+- Real-time Communication
 
 ## Getting Started
 
@@ -72,3 +72,4 @@ This project is licence under the [MIT](LICENSE) community standards
 
 1. David M. Muchoki
 2. [Michael Korir](https://github.com/michaelkorir)
+3. [Clement Macharia](https://github.com/clementmw)

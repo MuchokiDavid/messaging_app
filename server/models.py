@@ -8,15 +8,6 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
-# class UserConversation(db.Model, SerializerMixin):
-#     __tablename__= 'userconversations'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id= db.Column(db.Integer, db.ForeignKey("users.id"))
-#     conversation_id= db.Column(db.Integer(), db.ForeignKey('conversations.id'))
-#     created_at = db.Column(db.DateTime, server_default=db.func.now())
-#     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-
 Usersconversation = db.Table(
     'usersconversations',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
@@ -33,7 +24,7 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    user_conversations= db.relationship("Usersconversation", backref="user")
+    conversations= db.relationship('Conversation', secondary= Usersconversation, back_populates="users")
     
     @validates('email')
     def validate_email(self, key, address):
@@ -69,7 +60,7 @@ class Conversation(db.Model, SerializerMixin):
 
     #rlshp
     messages= db.relationship("Message", backref= 'conversation')
-    conversations_user= db.relationship("Usersconversation", backref="conversation")
+    users= db.relationship('User', secondary= Usersconversation, back_populates = "conversations")
 
     def serialize(self):
         return {"id": self.id, "group_name": self.group_name}

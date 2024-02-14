@@ -66,9 +66,9 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 
 ## License
 
-This project is licence under the (MIT)[LICENSE] community standards
+This project is licence under the [MIT](LICENSE) community standards
 
 ## Author
 
 1. David M. Muchoki
-2. Michael Korir- https://github.com/michaelkorir
+2. [Michael Korir](https://github.com/michaelkorir)

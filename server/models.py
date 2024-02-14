@@ -17,8 +17,8 @@ bcrypt = Bcrypt()
 #     created_at = db.Column(db.DateTime, server_default=db.func.now())
 #     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-users_conversations = db.Table(
-    'users_conversations',
+Usersconversation = db.Table(
+    'usersconversations',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
     db.Column('conversation_id', db.Integer, db.ForeignKey('conversations.id'), primary_key=True),
 )
@@ -33,7 +33,7 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    user_conversations= db.relationship("UserConversation", backref="user")
+    user_conversations= db.relationship("Usersconversation", backref="user")
     
     @validates('email')
     def validate_email(self, key, address):
@@ -69,7 +69,7 @@ class Conversation(db.Model, SerializerMixin):
 
     #rlshp
     messages= db.relationship("Message", backref= 'conversation')
-    conversations_user= db.relationship("UserConversation", backref="conversation")
+    conversations_user= db.relationship("Usersconversation", backref="conversation")
 
     def serialize(self):
         return {"id": self.id, "group_name": self.group_name}

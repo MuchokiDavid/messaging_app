@@ -8,15 +8,20 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
-class UserConversation(db.Model, SerializerMixin):
-    __tablename__= 'userconversations'
+# class UserConversation(db.Model, SerializerMixin):
+#     __tablename__= 'userconversations'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer, db.ForeignKey("users.id"))
-    conversation_id= db.Column(db.Integer(), db.ForeignKey('conversations.id'))
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id= db.Column(db.Integer, db.ForeignKey("users.id"))
+#     conversation_id= db.Column(db.Integer(), db.ForeignKey('conversations.id'))
+#     created_at = db.Column(db.DateTime, server_default=db.func.now())
+#     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+users_conversations = db.Table(
+    'users_conversations',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('conversation_id', db.Integer, db.ForeignKey('conversations.id'), primary_key=True),
+)
     
 class User(db.Model, SerializerMixin):
     __tablename__= 'users'

@@ -76,5 +76,5 @@ class Message(db.Model, SerializerMixin):
     conversation_id= db.Column(db.Integer, db.ForeignKey("conversations.id"))
 
     def serialize(self):
-        return {"id": self.id, "content": self.content, "created_at": self.created_at}
+        return {"id": self.id, "content": self.content, "created_at": self.created_at, "conversation_id": self.conversation_id}
         

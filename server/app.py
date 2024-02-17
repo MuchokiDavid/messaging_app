@@ -48,9 +48,41 @@ class Messages(Resource):
         return response
 
 class MessageById(Resource):
-    pass
+    def get(id):
+        message= Message.query.get(id)
+        if not message:
+            response=  make_response(jsonify({'Error':'Message does not exist'}), 404)
+            return response
+        response=  make_response(jsonify(message.serialize()), 200)
+        return response
+    
+    def delete(id):
+        message = Message.query.get(id)
+        if not message:
+            response=  make_response(jsonify({'Error':'Message does not exist'}), 404)
+            return response
+        db.session.delete(message)
+        db.session.commit()
+        response = make_response(jsonify({"Message":"Deleted Successfully"}), 200)
+        return response
+    
+    def patch(id):
+        message= Message.query.get(id)
+        data= request.get_json()
+        if not message:
+            response=  make_response(jsonify({'Error':'Message does not exist'}), 404)
+            return response
+        content=  data.get('content')
+        if content is None:
+            return 'Missing content value', 400
+        message.content= content
+        db.session.commit()
+        response= make_response(jsonify(message.serialize()), 200)
+        return response
+    
 
 api.add_resource(Messages, '/messages')
+api.add_resource(MessageById, '/messages/<int:id>')
 
 
 if __name__ == '__main__':

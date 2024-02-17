@@ -99,7 +99,27 @@ class Conversations(Resource):
         response= make_response(jsonify(new_conversation.serialize(), 201))
         return response
     
+class ConversationById(Resource):
+    def  get(id):
+        conversation= Conversation.query.filter_by(id=id).first()
+        if not conversation:
+            response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)
+            return response
+        response=  make_response(jsonify(conversation.serialize()), 200)
+        return response
+    
+    def delete(id):
+        conversation= Conversation.query.filter_by(id=id).first()
+        if not conversation:
+            response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)
+            return response
+        db.session.delete(conversation)
+        db.session.commit()
+        response = make_response(jsonify({"Conversation":"Deleted Successfully"}), 200)
+        return response
+
 api.add_resource(Conversations, '/conversations')
+api.add_resource(ConversationById, '/conversations/<int:id>')
 api.add_resource(Messages, '/messages')
 api.add_resource(MessageById, '/messages/<int:id>')
 

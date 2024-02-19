@@ -4,6 +4,7 @@ from flask import Flask, make_response, request, jsonify, abort
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
+import hashlib
 
 from models import db, Message, Conversation, User
 
@@ -122,6 +123,35 @@ class UsersList(Resource):
     def get(self):
         users = User.query.all()
         return [{"id": user.id, "name": user.username, "email": user.email} for user in users]
+    
+    def post(self):
+            # Function to hash the password using SHA-256
+        def hash_password(password):
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            return hashed_password
+        
+        data = request.get_json()
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('_password_hash')
+        
+        if not username or not email or not password:
+            response = make_response(jsonify({"Error": "Username, email, and password are required fields"}), 400)
+            return response
+        
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            response = make_response(jsonify({"Error": "User with this email already exists"}), 400)
+            return response
+        
+        password_hash = hash_password(password)
+        
+        new_user = User(username=username, email=email, _password_hash=password_hash)
+        db.session.add(new_user)
+        db.session.commit()
+        
+        response = make_response(jsonify(new_user.serialize()), 201)
+        return response
 
 api.add_resource(Conversations, '/conversations')
 api.add_resource(ConversationById, '/conversations/<int:id>')

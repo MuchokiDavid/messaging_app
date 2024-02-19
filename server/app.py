@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, make_response, request, jsonify, abort
+from flask import Flask, make_response, request, jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
@@ -152,12 +152,57 @@ class UsersList(Resource):
         
         response = make_response(jsonify(new_user.serialize()), 201)
         return response
+    
+class UsersByID(Resource):
+    def get(self, user_id):
+        user = User.query.get(user_id)
+        if user:
+            return {"id": user.id, "name": user.username, "email": user.email}
+        else:
+            raise NotFound("User not found")
+        
+    def delete(self, user_id):
+        user = User.query.get(user_id)
+        if not user:
+            return {'error':'User does not exist'},404
+        else:
+            db.session.delete(user)
+            db.session.commit()
+            response = make_response(jsonify({'Message':'User deleted'}), 200)
+            return response
+        
+    def patch(self, user_id):
+        def hash_password(password):
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            return hashed_password
+        existing_user = User.query.get(user_id)
+        if not existing_user:
+            return {'Error': 'User does not exist'}, 404
+
+        data = request.get_json()
+        if 'username' in data:
+            existing_user.username = data['username']
+        if 'email' in data:
+            existing_user.email = data['email']
+        if 'password' in data:
+            password = data['password']
+
+            # Hash the new password
+            password_hash = hash_password(password)
+            existing_user.password_hash = password_hash
+
+        db.session.commit()
+        response = make_response(jsonify(existing_user.serialize()), 200)
+        return response
+
+
 
 api.add_resource(Conversations, '/conversations')
 api.add_resource(ConversationById, '/conversations/<int:id>')
 api.add_resource(Messages, '/messages')
 api.add_resource(MessageById, '/messages/<int:id>')
 api.add_resource(UsersList, "/users")
+api.add_resource(UsersByID, "/users/<int:user_id>")
 
 
 if __name__ == '__main__':

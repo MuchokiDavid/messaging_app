@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, make_response, request, jsonify
+from flask import Flask, make_response, request, jsonify, abort
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
@@ -117,11 +117,17 @@ class ConversationById(Resource):
         db.session.commit()
         response = make_response(jsonify({"Conversation":"Deleted Successfully"}), 200)
         return response
+    
+class UsersList(Resource):
+    def get(self):
+        users = User.query.all()
+        return [{"id": user.id, "name": user.username, "email": user.email} for user in users]
 
 api.add_resource(Conversations, '/conversations')
 api.add_resource(ConversationById, '/conversations/<int:id>')
 api.add_resource(Messages, '/messages')
 api.add_resource(MessageById, '/messages/<int:id>')
+api.add_resource(UsersList, "/users")
 
 
 if __name__ == '__main__':

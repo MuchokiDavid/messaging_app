@@ -2,8 +2,7 @@ import React from 'react'
 import Header from './Header'
 import Sideview from './Sideview'
 import Footer from './Footer'
-import Textinput from './Textinput'
-import Messageview from './Messageview'
+import Defaulthome from './Defaulthome'
 
 function Home() {
   return (
@@ -12,8 +11,7 @@ function Home() {
       <div style={{ display: 'flex' }}>
         <Sideview/>
         <div style={{ flex: 1 }}>
-          <Messageview/>
-          <Textinput/>
+          <Defaulthome/>
         </div>
       </div>
       <Footer/>

@@ -23,8 +23,8 @@ function Sideview() {
     <div>
         <Sidebar>
             <Menu>
-                {conversations.map((item, index) => (
-                    <MenuItem key={item[0][index].id}>{item[0][index].group_name}</MenuItem>
+                {conversations.map((item) => (
+                    <MenuItem key={item.id}>{item.group_name}</MenuItem>
                 ))}
             </Menu>
         </Sidebar>

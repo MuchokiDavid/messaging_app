@@ -2,12 +2,12 @@ import React from 'react'
 import {Button, Form} from 'react-bootstrap'
 import { useState} from 'react';
 
-function Textinput() {
+function Textinput({id}) {
 
   const [message, setMessage] = useState("");
   // const[loading, setLoading]= useState(false);
   // const [error, setError ]=useState(null)
-
+console.log(id)
 
   const handleSubmit= (e) =>{
     e.preventDefault();

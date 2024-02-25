@@ -72,7 +72,7 @@ function Sideview() {
                     return {
                       color: disabled ? '#f5d9ff' : '#000000',
                       backgroundColor: active ? '#eecef9' : undefined,
-                      textAlign: 'left'
+                      textAlign: 'left',
                     };
                     
                 },
@@ -80,17 +80,17 @@ function Sideview() {
             >
               {/* <h3 className='text-left text-lg font-semibold pl-4'>Conversations</h3> */}
               <MenuItem > 
-              <Form className="d-flex p-0" >
-            <Form.Control
-              type="text"
-              placeholder="Add New Conversation"
-              className="me-2"
-              onChange={(e) => setpostConversation(e.target.value)}
-            />
-            <Button className='text-white bg-green-600 mt-1' onClick={handleSubmit}>
-              Add 
-            </Button>
-          </Form>
+              <Form className="d-flex p-0 w-52" >
+                <Form.Control
+                  type="text"
+                  placeholder="New Conversation"
+                  className="me-2"
+                  onChange={(e) => setpostConversation(e.target.value)}
+                />
+                <Button className='text-white bg-green-600 mt-1' onClick={handleSubmit}>
+                  Add 
+                </Button>
+              </Form>
               </MenuItem>
                 {conversations.map((item) => (
                     <MenuItem key={item.id}>{item.group_name}</MenuItem>

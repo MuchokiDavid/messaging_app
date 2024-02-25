@@ -37,6 +37,7 @@ function Sideview() {
                 },
               }}
             >
+              {/* <h3 className='text-left text-lg font-semibold pl-4'>Conversations</h3> */}
                 {conversations.map((item) => (
                     <MenuItem key={item.id}>{item.group_name}</MenuItem>
                 ))}

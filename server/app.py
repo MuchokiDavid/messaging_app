@@ -49,7 +49,7 @@ class Messages(Resource):
         return response
 
 class MessageById(Resource):
-    def get(id):
+    def get(self, id):
         message= Message.query.get(id)
         if not message:
             response=  make_response(jsonify({'Error':'Message does not exist'}), 404)
@@ -57,7 +57,7 @@ class MessageById(Resource):
         response=  make_response(jsonify(message.serialize()), 200)
         return response
     
-    def delete(id):
+    def delete(self, id):
         message = Message.query.get(id)
         if not message:
             response=  make_response(jsonify({'Error':'Message does not exist'}), 404)
@@ -67,7 +67,7 @@ class MessageById(Resource):
         response = make_response(jsonify({"Message":"Deleted Successfully"}), 200)
         return response
     
-    def patch(id):
+    def patch(self, id):
         message= Message.query.get(id)
         data= request.get_json()
         if not message:
@@ -101,7 +101,7 @@ class Conversations(Resource):
         return response
     
 class ConversationById(Resource):
-    def  get(id):
+    def  get(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
             response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)
@@ -109,7 +109,7 @@ class ConversationById(Resource):
         response=  make_response(jsonify(conversation.serialize()), 200)
         return response
     
-    def delete(id):
+    def delete(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
             response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)

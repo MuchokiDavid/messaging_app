@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
+import { BiSolidMessageAdd } from "react-icons/bi";
 
 
 function Sideview() {
@@ -38,6 +39,7 @@ function Sideview() {
               }}
             >
               {/* <h3 className='text-left text-lg font-semibold pl-4'>Conversations</h3> */}
+              <MenuItem><BiSolidMessageAdd className='w-8 h-10'/></MenuItem>
                 {conversations.map((item) => (
                     <MenuItem key={item.id}>{item.group_name}</MenuItem>
                 ))}

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import 'react-pro-sidebar/dist/css/styles.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

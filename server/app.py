@@ -81,16 +81,16 @@ class MessageById(Resource):
         return response
     
 class Conversations(Resource):
-    def get():
+    def get(self):
         all_conversations= Conversation.query.all()
         if not all_conversations:
             response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)
             return response
-        conversations_list= [conv.serialize for conv in all_conversations]
+        conversations_list= [conv.serialize() for conv in all_conversations]
         response=  make_response(jsonify(conversations_list, 200))
         return response
     
-    def post():
+    def post(self):
         data= request.get_json()
         group= data['group']
         new_conversation=  Conversation(group_name=group)

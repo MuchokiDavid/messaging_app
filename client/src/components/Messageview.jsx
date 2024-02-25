@@ -31,7 +31,7 @@ function Messageview() {
         <Sideview/>
         <div style={{ flex: 1 }}>
           <h1 className="text-center mt-4">{messages.group_name}</h1>
-          <Textinput/>
+          <Textinput id= {id}/>
         </div>
       </div>
       <Footer/>

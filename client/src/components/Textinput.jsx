@@ -2,7 +2,9 @@ import React from 'react'
 
 function Textinput() {
   return (
-    <div>Textinput</div>
+    <div>
+      Textinput
+    </div>
   )
 }
 

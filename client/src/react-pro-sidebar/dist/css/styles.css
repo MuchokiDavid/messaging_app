@@ -1,0 +1,30 @@
+/* styles.css */
+
+/* Sidebar container */
+.react-pro-sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Menu items */
+  .react-pro-sidebar-menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .react-pro-sidebar-menu-item {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .react-pro-sidebar-menu-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Active menu item */
+  .react-pro-sidebar-menu-item.active {
+    background-color: #dcdcdc;
+  }
+  

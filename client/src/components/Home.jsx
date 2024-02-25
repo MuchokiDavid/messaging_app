@@ -1,8 +1,15 @@
 import React from 'react'
+import Header from './Header'
+import Sideview from './Sideview'
+import Footer from './Footer'
 
 function Home() {
   return (
-    <div>Home</div>
+    <div>
+      <Header/>
+      <Sideview/>
+      <Footer/>
+    </div>
   )
 }
 

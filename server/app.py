@@ -93,7 +93,7 @@ class Conversations(Resource):
     
     def post(self):
         data= request.get_json()
-        group= data['group']
+        group= data.get('group_name')
         new_conversation=  Conversation(group_name=group)
         db.session.add(new_conversation)
         db.session.commit()

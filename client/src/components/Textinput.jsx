@@ -5,11 +5,14 @@ import { useState} from 'react';
 function Textinput() {
 
   const [message, setMessage] = useState("");
-  const[loading, setLoading]= useState(false);
+  // const[loading, setLoading]= useState(false);
+  // const [error, setError ]=useState(null)
+
 
   const handleSubmit= (e) =>{
     e.preventDefault();
     console.log(message);
+    
   }
 
   return (

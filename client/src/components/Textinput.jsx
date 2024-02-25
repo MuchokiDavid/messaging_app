@@ -5,6 +5,7 @@ import { useState} from 'react';
 function Textinput() {
 
   const [message, setMessage] = useState("");
+  const[loading, setLoading]= useState(false);
 
   const handleSubmit= (e) =>{
     e.preventDefault();

@@ -87,7 +87,7 @@ class Conversations(Resource):
             response=  make_response(jsonify({'Error':'Conversations does not exist'}), 404)
             return response
         conversations_list= [conv.serialize() for conv in all_conversations]
-        response=  make_response(jsonify(conversations_list, 200))
+        response=  make_response(jsonify(conversations_list),200)
         return response
     
     def post(self):
@@ -96,7 +96,7 @@ class Conversations(Resource):
         new_conversation=  Conversation(group_name=group)
         db.session.add(new_conversation)
         db.session.commit()
-        response= make_response(jsonify(new_conversation.serialize(), 201))
+        response= make_response(jsonify(new_conversation.serialize()),201)
         return response
     
 class ConversationById(Resource):

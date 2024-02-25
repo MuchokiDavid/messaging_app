@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react'
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
+import { Link, useNavigate} from "react-router-dom";
 
 function Sideview() {
     const [conversations, setConversations]= useState([])
     const [postConversation, setpostConversation] = useState("")
     const[loading, setLoading]= useState(false);
-    // const [error, setError ]=useState(null)
+    const navigate = useNavigate();
     
 
     useEffect(()=>{
@@ -24,8 +24,10 @@ function Sideview() {
         }
         fetchData()
     },[])
-    // console.log(conversations)
     
+    const handleSidebarClick= (id)=>{
+      navigate(`/conversations/${id}`);
+    }
 
     const  handleSubmit= async(event) => {
         event.preventDefault();
@@ -72,7 +74,9 @@ function Sideview() {
                     return {
                       color: disabled ? '#f5d9ff' : '#000000',
                       backgroundColor: active ? '#eecef9' : undefined,
-                      textAlign: 'left'
+                      textAlign: 'left',
+                      height: "40px",
+                      border: '0.5px solid #f0f0f0',
                     };
                     
                 },
@@ -80,20 +84,20 @@ function Sideview() {
             >
               {/* <h3 className='text-left text-lg font-semibold pl-4'>Conversations</h3> */}
               <MenuItem > 
-              <Form className="d-flex p-0" >
-            <Form.Control
-              type="text"
-              placeholder="Add New Conversation"
-              className="me-2"
-              onChange={(e) => setpostConversation(e.target.value)}
-            />
-            <Button className='text-white bg-green-600 mt-1' onClick={handleSubmit}>
-              Add 
-            </Button>
-          </Form>
+              <Form className="d-flex p-0 w-52" >
+                <Form.Control
+                  type="text"
+                  placeholder="New Conversation"
+                  className="me-2"
+                  onChange={(e) => setpostConversation(e.target.value)}
+                />
+                <Button className='text-white bg-green-600 mt-1' onClick={handleSubmit}>
+                  Add 
+                </Button>
+              </Form>
               </MenuItem>
                 {conversations.map((item) => (
-                    <MenuItem key={item.id}>{item.group_name}</MenuItem>
+                    <MenuItem onClick={()=> handleSidebarClick(item.id)} key={item.id}><Link to={`/conversations/${item.id}`}>{item.group_name}</Link></MenuItem>
                 ))}
             </Menu>
         </Sidebar>

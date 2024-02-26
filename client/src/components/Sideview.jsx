@@ -91,7 +91,7 @@ function Sideview() {
                   className="me-2"
                   onChange={(e) => setpostConversation(e.target.value)}
                 />
-                <Button className='text-white bg-green-600 mt-1' onClick={handleSubmit}>
+                <Button className='text-white bg-green-600 mt-1' variant='success' onClick={handleSubmit}>
                   Add 
                 </Button>
               </Form>

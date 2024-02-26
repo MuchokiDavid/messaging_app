@@ -31,7 +31,7 @@ function Sideview() {
 
     const  handleSubmit= async(event) => {
         event.preventDefault();
-        console.log(postConversation)
+        // console.log(postConversation)
         const formData  = {group_name: postConversation}
         setLoading(true)
         try {
@@ -97,7 +97,7 @@ function Sideview() {
               </Form>
               </MenuItem>
                 {conversations.map((item) => (
-                    <MenuItem onClick={()=> handleSidebarClick(item.id)} key={item.id}><Link to={`/conversations/${item.id}`}>{item.group_name}</Link></MenuItem>
+                    <MenuItem onClick={()=> handleSidebarClick(item.id)} key={item.id}>{item.group_name}</MenuItem>
                 ))}
             </Menu>
         </Sidebar>

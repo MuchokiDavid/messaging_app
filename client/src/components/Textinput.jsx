@@ -5,14 +5,43 @@ import { useState} from 'react';
 function Textinput({id}) {
 
   const [message, setMessage] = useState("");
-  // const[loading, setLoading]= useState(false);
+  const[loading, setLoading]= useState(false);
   // const [error, setError ]=useState(null)
-console.log(id)
 
-  const handleSubmit= (e) =>{
+  const handleSubmit= async (e) =>{
     e.preventDefault();
-    console.log(message);
-    
+    const formData  = {
+      content: message,
+      conversation_id: id
+    }
+    setLoading(true)
+    try {
+      const response = await fetch('/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Data posted successfully:', data);
+    } 
+    catch (error) {
+      // setError(error.message);
+      console.log('Error posting data:', error);
+    }
+    finally {
+      setLoading(false);
+      window.location.reload()
+    }
+  }
+  if(loading){
+    return <p>Loading...</p>
   }
 
   return (

@@ -36,8 +36,8 @@ class Messages(Resource):
     
     def post(self):
         data= request.get_json()
-        content= data['content']
-        conversation_id= data['conversation_id']
+        content= data.get('content')
+        conversation_id= data.get('conversation_id')
         checkCoversation= Conversation.query.get(conversation_id)
         if not checkCoversation:
             response= make_response(jsonify({"Error" : "Conversation not found"}), 400)

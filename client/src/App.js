@@ -1,16 +1,17 @@
 import './App.css';
-import Home from './components/Home';
-import { Route, Routes} from "react-router-dom";
+import { Route, Routes, Navigate} from "react-router-dom";
 import Messageview from './components/Messageview';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 
 function App() {
   return (
     <div className="App container mx-auto">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Navigate to="/login" />}/>
         <Route path="/conversations/:id" element={<Messageview />} />
-        {/* <Route path="/live" element={<Live />} />
-        <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );

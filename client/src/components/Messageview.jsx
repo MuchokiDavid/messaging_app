@@ -37,15 +37,15 @@ useEffect(() => {
   }
   fetchData()
 },[id])
-console.log(allMessages)
+// console.log(allMessages)
 
   const displayCard= allMessages.map((item) => {
     // console.log(item.content)
     if (parseInt(item.conversation_id) === parseInt(id)) {
       return (
-        <Card className='ml-6 mt-2' key={item.id} style={{ width: '65rem' }}>
+        <Card className='ml-6 mt-2 text-left' key={item.id} style={{ width: '65rem' }}>
           <Card.Body>
-            <Card.Text>{item.content}</Card.Text>
+            <Card.Text>{item.content}</Card.Text><br/>
             <Card.Text>{item.created_at}</Card.Text>
           </Card.Body>
         </Card>

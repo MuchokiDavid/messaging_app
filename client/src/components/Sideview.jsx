@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function Sideview() {
     const [conversations, setConversations]= useState([])

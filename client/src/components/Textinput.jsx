@@ -45,10 +45,10 @@ function Textinput({id}) {
   }
 
   return (
-    <div>
-      <Form onSubmit={handleSubmit}>
+    <div className='mt-10'>
+      <Form className='h-10 w-auto' onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Control as="textarea" placeholder='Message' className='h-8' rows={3} onChange={(e)=> {setMessage(e.target.value)}}/>
+          <Form.Control as="textarea" placeholder='Message' className='h-10' rows={3} onChange={(e)=> {setMessage(e.target.value)}}/>
           <Button className='text-white bg-green-600 mt-1' variant="success" type="submit">
             Send
           </Button>

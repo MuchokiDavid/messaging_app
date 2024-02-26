@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, make_response, request, jsonify, abort
+from flask import Flask, make_response, request, jsonify, abort, render_template, session
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
@@ -23,9 +23,18 @@ def handle_not_found(e):
     response= make_response("NotFound: The requested resource not found", 404)
     return response
 
+@app.route('/login')
+def login():
+    # if request.form['email'] and request.form['Password']:
+    pass
+
+
 @app.route('/')
 def index():
-    return '<h1>Messaging App</h1>'
+    if session.get('logged_in'):
+        return render_template('index.html')
+    else:
+        return 'Please Log in'
 
 class Messages(Resource):
     def get(self):

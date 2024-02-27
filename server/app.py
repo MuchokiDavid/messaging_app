@@ -5,11 +5,18 @@ from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
 import hashlib
+import uuid #Universal Unique Identifiers create random ID numbers for users.
+import  os
+import datetime
+import jwt
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from models import db, Message, Conversation, User
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY']=  'dffa6aab40c946c5b6b43fb187791321'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///message.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -18,16 +25,36 @@ migrate = Migrate(app, db)
 db.init_app(app)
 api= Api(app)
 
+def token_required(func):
+    @wraps(func)#allows us to add additional functionality to the decorated function
+    def wrapper(*args, **kwargs):#*args (positinal arguments) and **kwargs(keyword arguments) allow us to pass any number of arguments to our function
+        token= request.args.get('token')
+        if not  token:
+            return jsonify({'message': 'Token is missing!'}), 401
+        try:
+            payload = jwt.decode(token, app.config['SECRET_KEY'])
+            return func(payload)
+        except jwt.ExpiredSignatureError:
+             return jsonify({'message':'Signature expired! Login again.'}), 401
+        except jwt.InvalidTokenError:
+              return jsonify({'message':'Invalid Token!'}) , 401
+    return wrapper
+
 @app.errorhandler(NotFound)
 def handle_not_found(e):
     response= make_response("NotFound: The requested resource not found", 404)
     return response
 
-@app.route('/login')
+@app.route('/login', methods= ['POST'])
 def login():
-    # if request.form['email'] and request.form['Password']:
-    pass
-
+    auth= request.authorization
+    if not auth or  not auth.username or not auth.password:
+        return make_response('Could not verify your access', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
+    user= User.query.filter_by(name=auth.username).first()
+    if not user or not check_password_hash(user.password, auth.password):
+        return make_response('Could not verify your account', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
+    token= jwt.encode({'publi_id': user.public_id, 'exp' : datetime.utconw()+ datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'], 'HS256')
+    return jsonify({'token' : token})
 
 @app.route('/')
 def index():
@@ -136,7 +163,7 @@ class UsersList(Resource):
     def post(self):
             # Function to hash the password using SHA-256
         def hash_password(password):
-            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            hashed_password = generate_password_hash(password, method='sha256')
             return hashed_password
         
         data = request.get_json()
@@ -155,7 +182,7 @@ class UsersList(Resource):
         
         password_hash = hash_password(password)
         
-        new_user = User(username=username, email=email, _password_hash=password_hash)
+        new_user = User(username=username, public_id= str(uuid.uuid4()),email=email, _password_hash=password_hash)
         db.session.add(new_user)
         db.session.commit()
         

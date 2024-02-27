@@ -2,6 +2,7 @@ from faker import Faker
 from models import db, User, Conversation, Message
 from random import choice as rc
 from flask_bcrypt import Bcrypt 
+import uuid
 fake =Faker()
 bcrypt = Bcrypt()
 
@@ -15,8 +16,9 @@ with app.app_context():
     for  i in range(10):
         fake_password =fake.password(length=8)
         hashed_password =  bcrypt.generate_password_hash(fake_password).decode('utf-8')
+        public_id = str(uuid.uuid4()) # Generate a unique identifier
         
-        user =User(username=fake.user_name(),email=fake.free_email(), _password_hash =hashed_password)
+        user =User(username=fake.user_name(), public_id= public_id,email=fake.free_email(), _password_hash =hashed_password)
         db.session.add(user)
         db.session.commit()
 

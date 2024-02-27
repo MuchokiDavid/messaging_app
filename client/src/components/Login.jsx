@@ -14,8 +14,8 @@ function Login() {
             <Form className='login-form' method="post"  action="/login">
                 <Form.Text className='text-black font-bold text-3xl'>Login</Form.Text>
                 <Form.Group className="mb-3 mt-5" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control className='w-1/2 mx-44' type="email" placeholder="Enter email" />
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control className='w-1/2 mx-44' type="text" placeholder="Enter username" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>

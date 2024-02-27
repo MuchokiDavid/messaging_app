@@ -22,10 +22,25 @@ function SignUp() {
                 title: 'Error!',
                 text: 'Password does not match',
                 icon: 'error',
-                confirmButtonText: 'Ok'
-              })
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'btn btn-danger'
+                }
+              });
 
-        } else{
+        }
+        else if(password==="" && email === ""  && username===""){
+            Swal.fire({
+                title: 'Warning!',
+                text: "Please fill out all fields",
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'btn btn-danger'
+                }
+              })
+        } 
+        else{
             const formData  = {
                 username: username,
                 email: email,

@@ -6,7 +6,6 @@ from flask_restful import Api, Resource
 from werkzeug.exceptions import NotFound
 import hashlib
 import uuid #Universal Unique Identifiers create random ID numbers for users.
-import  os
 import datetime
 import jwt
 from functools import wraps
@@ -33,7 +32,7 @@ def token_required(func):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             payload = jwt.decode(token, app.config['SECRET_KEY'])
-            return func(payload)
+            # return func(payload)
         except jwt.ExpiredSignatureError:
              return jsonify({'message':'Signature expired! Login again.'}), 401
         except jwt.InvalidTokenError:
@@ -50,11 +49,32 @@ def login():
     auth= request.authorization
     if not auth or  not auth.username or not auth.password:
         return make_response('Could not verify your access', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
-    user= User.query.filter_by(name=auth.username).first()
-    if not user or not check_password_hash(user.password, auth.password):
+    user= User.query.filter_by(username=auth.username).first()
+    if not user or not check_password_hash(user._password_hash, auth.password):
         return make_response('Could not verify your account', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
-    token= jwt.encode({'publi_id': user.public_id, 'exp' : datetime.utconw()+ datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'], 'HS256')
-    return jsonify({'token' : token})
+    if check_password_hash(user._password_hash, auth.password):
+        token= jwt.encode({'public_id': user.public_id, 'exp' : datetime.datetime.utcnow()+ datetime.timedelta(minutes=60)}, app.config['SECRET_KEY'], 'HS256')
+        session['logged_in']= True
+        return jsonify({'token' : token})
+
+# @app.route('/login')
+# def login():
+#     auth = request.authorization
+
+#     if not auth or not auth.username or not auth.password:
+#         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+
+#     user = User.query.filter_by(name=auth.username).first()
+
+#     if not user:
+#         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+
+#     if check_password_hash(user._password_hash, auth.password):
+#         token = jwt.encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+
+#         return jsonify({'token' : token.decode('UTF-8')})
+
+#     return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
 @app.route('/')
 def index():
@@ -64,12 +84,14 @@ def index():
         return 'Please Log in'
 
 class Messages(Resource):
+    @token_required
     def get(self):
         all_messages= Message.query.all()
         result= [msg.serialize() for msg in all_messages]
         response= make_response(jsonify(result), 200)
         return response
     
+    @token_required
     def post(self):
         data= request.get_json()
         content= data.get('content')
@@ -85,6 +107,7 @@ class Messages(Resource):
         return response
 
 class MessageById(Resource):
+    @token_required
     def get(self, id):
         message= Message.query.get(id)
         if not message:
@@ -93,6 +116,7 @@ class MessageById(Resource):
         response=  make_response(jsonify(message.serialize()), 200)
         return response
     
+    @token_required
     def delete(self, id):
         message = Message.query.get(id)
         if not message:
@@ -103,6 +127,7 @@ class MessageById(Resource):
         response = make_response(jsonify({"Message":"Deleted Successfully"}), 200)
         return response
     
+    @token_required
     def patch(self, id):
         message= Message.query.get(id)
         data= request.get_json()
@@ -118,6 +143,7 @@ class MessageById(Resource):
         return response
     
 class Conversations(Resource):
+    # @token_required
     def get(self):
         all_conversations= Conversation.query.all()
         if not all_conversations:
@@ -127,6 +153,7 @@ class Conversations(Resource):
         response=  make_response(jsonify(conversations_list),200)
         return response
     
+    # @token_required
     def post(self):
         data= request.get_json()
         group= data.get('group_name')
@@ -137,6 +164,7 @@ class Conversations(Resource):
         return response
     
 class ConversationById(Resource):
+    @token_required
     def  get(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
@@ -144,7 +172,7 @@ class ConversationById(Resource):
             return response
         response=  make_response(jsonify(conversation.serialize()), 200)
         return response
-    
+    @token_required
     def delete(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
@@ -156,10 +184,12 @@ class ConversationById(Resource):
         return response
     
 class UsersList(Resource):
+    @token_required
     def get(self):
         users = User.query.all()
         return [{"id": user.id, "name": user.username, "email": user.email} for user in users]
     
+    @token_required
     def post(self):
             # Function to hash the password using SHA-256
         def hash_password(password):
@@ -190,6 +220,7 @@ class UsersList(Resource):
         return response
 
 class UsersByID(Resource):
+    @token_required
     def get(self, user_id):
         user = User.query.get(user_id)
         if user:
@@ -197,6 +228,7 @@ class UsersByID(Resource):
         else:
             raise NotFound("User not found")
         
+    @token_required    
     def delete(self, user_id):
         user = User.query.get(user_id)
         if not user:
@@ -206,7 +238,7 @@ class UsersByID(Resource):
             db.session.commit()
             response = make_response(jsonify({'Message':'User deleted'}), 200)
             return response
-        
+    @token_required    
     def patch(self, user_id):
         def hash_password(password):
             hashed_password = hashlib.sha256(password.encode()).hexdigest()

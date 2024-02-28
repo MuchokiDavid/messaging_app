@@ -91,7 +91,7 @@ class Messages(Resource):
         response= make_response(jsonify(result), 200)
         return response
     
-    @token_required
+    # @token_required
     def post(self):
         data= request.get_json()
         content= data.get('content')
@@ -107,7 +107,7 @@ class Messages(Resource):
         return response
 
 class MessageById(Resource):
-    @token_required
+    # @token_required
     def get(self, id):
         message= Message.query.get(id)
         if not message:
@@ -116,7 +116,7 @@ class MessageById(Resource):
         response=  make_response(jsonify(message.serialize()), 200)
         return response
     
-    @token_required
+    # @token_required
     def delete(self, id):
         message = Message.query.get(id)
         if not message:
@@ -127,7 +127,7 @@ class MessageById(Resource):
         response = make_response(jsonify({"Message":"Deleted Successfully"}), 200)
         return response
     
-    @token_required
+    # @token_required
     def patch(self, id):
         message= Message.query.get(id)
         data= request.get_json()
@@ -164,7 +164,7 @@ class Conversations(Resource):
         return response
     
 class ConversationById(Resource):
-    @token_required
+    # @token_required
     def  get(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
@@ -172,7 +172,7 @@ class ConversationById(Resource):
             return response
         response=  make_response(jsonify(conversation.serialize()), 200)
         return response
-    @token_required
+    # @token_required
     def delete(self, id):
         conversation= Conversation.query.filter_by(id=id).first()
         if not conversation:
@@ -184,12 +184,12 @@ class ConversationById(Resource):
         return response
     
 class UsersList(Resource):
-    @token_required
+    # @token_required
     def get(self):
         users = User.query.all()
         return [{"id": user.id, "name": user.username, "email": user.email} for user in users]
     
-    @token_required
+    # @token_required
     def post(self):
             # Function to hash the password using SHA-256
         def hash_password(password):
@@ -220,7 +220,7 @@ class UsersList(Resource):
         return response
 
 class UsersByID(Resource):
-    @token_required
+    # @token_required
     def get(self, user_id):
         user = User.query.get(user_id)
         if user:
@@ -228,7 +228,7 @@ class UsersByID(Resource):
         else:
             raise NotFound("User not found")
         
-    @token_required    
+    # @token_required    
     def delete(self, user_id):
         user = User.query.get(user_id)
         if not user:
@@ -238,7 +238,7 @@ class UsersByID(Resource):
             db.session.commit()
             response = make_response(jsonify({'Message':'User deleted'}), 200)
             return response
-    @token_required    
+    # @token_required    
     def patch(self, user_id):
         def hash_password(password):
             hashed_password = hashlib.sha256(password.encode()).hexdigest()
